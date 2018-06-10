@@ -74,8 +74,8 @@ class App extends Component {
 
     return (
       <div className=" text-center">
-        <header  style={{paddingBottom: '25px'}}>
-          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100}}>Welcome to the Tweet around the world!</h1>
+        <header>
+          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100}}>Welcome to Tweet around the world!</h1>
           <button type="button" className="btn btn-outline-primary" onClick={this.onClickHandler} style={{marginTop: 50}}>{buttonText}</button>
         </header>
         {body}

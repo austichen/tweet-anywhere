@@ -1,35 +1,42 @@
 import React, { Component } from 'react';
 import './App.css';
 import './bootstrap.min.css';
+import '../node_modules/font-awesome/css/font-awesome.min.css'
 import MyMapComponent from './MapElement.js';
 import Tweets from './Tweets.js'
 
 class SearchForImages extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      isLoading: false
+    }
   }
 
   getTweets = () =>{
     console.log('get tweets')
-    fetch('https://cors-anywhere.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?geocode='+this.props.location.coordinates.lat+','+this.props.location.coordinates.lng+',20mi', {
-      headers: {
-        'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAALt86QAAAAAACmrEK9zGluXlGwOyN07eh3HHiAE%3DNtCUeytzF8snroLeS8Iu21DY91i3CjQIM568zmxcIU9frN9d2Y'
-      }
-    })
-      .then(response =>{
-        response.json()
-          .then(data =>{
-            var tweetsArray = data.statuses
-            if (tweetsArray.length>10){
-              tweetsArray.splice(10,tweetsArray.length-10)
-            }
-            console.log('tweets array: ',tweetsArray)
-            this.props.setTweets(tweetsArray);
-            //this.setState({tweets: tweetsArray})
-          //  console.log('state: ',this.state.tweets)
-          //  console.log("this.tweets: ",this.tweets)
-          })
+    this.setState({isLoading: true}, () =>{
+      fetch('https://cors-anywhere.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?geocode='+this.props.location.coordinates.lat+','+this.props.location.coordinates.lng+',20mi', {
+        headers: {
+          'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAALt86QAAAAAACmrEK9zGluXlGwOyN07eh3HHiAE%3DNtCUeytzF8snroLeS8Iu21DY91i3CjQIM568zmxcIU9frN9d2Y'
+        }
       })
+        .then(response =>{
+          this.setState({isLoading: false})
+          response.json()
+            .then(data =>{
+              var tweetsArray = data.statuses
+              if (tweetsArray.length>10){
+                tweetsArray.splice(10,tweetsArray.length-10)
+              }
+              console.log('tweets array: ',tweetsArray)
+              this.props.setTweets(tweetsArray);
+              //this.setState({tweets: tweetsArray})
+            //  console.log('state: ',this.state.tweets)
+            //  console.log("this.tweets: ",this.tweets)
+            })
+        })
+    })
   }
 
   searchHandler = () =>{
@@ -91,7 +98,7 @@ class SearchForImages extends Component {
                                     coordinates={this.props.location.isFound ? this.props.location.coordinates : {lat: 0, lng: 0}}
                                     zoom={this.props.location.isFound ? 15 : 1}
                                     />}
-        {this.props.tweets!=null && <Tweets tweetsList={this.props.tweets}/>}
+        {this.state.isLoading ? <div><i className="fa fa-spinner fa-spin" /> Loading...</div> : (this.props.tweets!=null &&<Tweets tweetsList={this.props.tweets}/>)}
       </div>
     )
   }
