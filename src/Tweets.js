@@ -24,7 +24,7 @@ class TweetCard extends Component{
           </div>
           <div className="card-body">
             <p className="card-text">{this.props.text}</p>
-            <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary">View on Twitter</a>
+            <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary btn-sm">View on Twitter</a>
           </div>
         </div>
       </div>
