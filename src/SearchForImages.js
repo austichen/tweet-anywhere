@@ -4,12 +4,6 @@ import './bootstrap.min.css';
 import MyMapComponent from './MapElement.js';
 import Tweets from './Tweets.js'
 
-class DisplayTweets extends Component{
-  constructor(props){
-    super(props)
-  }
-}
-
 class SearchForImages extends Component {
   constructor(props) {
     super(props)
@@ -36,11 +30,16 @@ class SearchForImages extends Component {
       }
     })
       .then(response =>{
-        console.log(response);
         response.json()
           .then(data =>{
-            console.log(data.statuses);
-            this.setState({tweets: data.statuses});
+            var tweetsArray = data.statuses
+            if (tweetsArray.length>10){
+              tweetsArray.splice(10,tweetsArray.length-10)
+            }
+            console.log('tweets array: ',tweetsArray)
+            this.setState({tweets: tweetsArray})
+            console.log('state: ',this.state.tweets)
+          //  console.log("this.tweets: ",this.tweets)
           })
       })
   }
@@ -58,7 +57,7 @@ class SearchForImages extends Component {
       .then(response => {
         response.json()
           .then(data =>{
-            if (data.status=='OK'){
+            if (data.status==='OK'){
               console.log(data.results[0].formatted_address)
               this.setState({location: {
                               isFound: true,
