@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import './bootstrap.min.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css'
 import MyMapComponent from './MapElement.js';
@@ -76,8 +75,9 @@ class SearchForImages extends Component {
 
   render(){
     return (
+      <div style={{paddingTop: '20px'}}>
       <div className="container">
-        <h1 className="display-4" style={{marginTop: '20px', marginBottom: 20}}>Enter a location to search for tweets!</h1>
+        <h1 className="display-4" style={{ marginBottom: 20, color: '#a9a9a9'}}>Enter a location to search for tweets!</h1>
         <div className="input-group input-group-lg">
           <div className="input-group-prepend">
             <span className="input-group-text" id="inputGroup-sizing-lg">Location</span>
@@ -99,6 +99,7 @@ class SearchForImages extends Component {
                                     zoom={this.props.location.isFound ? 15 : 1}
                                     />}
         {this.state.isLoading ? <div><i className="fa fa-spinner fa-spin" /> Loading...</div> : (this.props.tweets!=null &&<Tweets tweetsList={this.props.tweets}/>)}
+      </div>
       </div>
     )
   }

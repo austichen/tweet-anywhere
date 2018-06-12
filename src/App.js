@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
 import './bootstrap.min.css';
+import './FontTitles.css'
 import ViewSavedImages from './ViewSavedImages';
 import SearchForImages from './SearchForImages';
 
@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   locationErrorHandler = () => {
-    this.setState({location:{isFound: false}})
+    this.setState({location:{isFound: false}, tweets: null})
   }
 
   toggleMap = () =>{
@@ -74,9 +74,9 @@ class App extends Component {
 
     return (
       <div className=" text-center">
-        <header>
-          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100}}>Welcome to Tweet around the world!</h1>
-          <button type="button" className="btn btn-outline-primary" onClick={this.onClickHandler} style={{marginTop: 50}}>{buttonText}</button>
+        <header style={{backgroundColor: '#1dcaff', paddingBottom: '25px'}}>
+          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100, color: 'white', fontFamily: "'Oxygen', sans-serif"}}>Welcome to Tweet around the world!</h1>
+          <button type="button" className="btn btn-outline-light" onClick={this.onClickHandler} style={{marginTop: 50, fontFamily: "Open Sans"}}>{buttonText}</button>
         </header>
         {body}
       </div>

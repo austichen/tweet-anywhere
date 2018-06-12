@@ -5,12 +5,3 @@
 .overlay{
   background-color: rgba(255,0,0,0.5);
 }
-
-disable.header {
-  padding-bottom: 25px;
-
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url('https://cdn.citywonders.com/media/16075/eiffel-tower-view-hero.jpg?anchor=center&mode=crop&quality=65&width=1920&height=480');
-  background-position: center;
-}

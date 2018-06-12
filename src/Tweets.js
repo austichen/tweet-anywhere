@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../node_modules/font-awesome/css/font-awesome.min.css'
 
 class TweetCard extends Component{
   constructor(props){
@@ -24,7 +25,10 @@ class TweetCard extends Component{
           </div>
           <div className="card-body">
             <p className="card-text">{this.props.text}</p>
-            <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary btn-sm">View on Twitter</a>
+            <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary btn-sm" style={{float: 'left'}}>View on Twitter</a>
+            <button className="btn btn-secondary btn-sm" style={{float: 'left', marginLeft: '10px'}}>
+              <i className="fa fa-bookmark"></i>  Save Tweet
+            </button>
           </div>
         </div>
       </div>
