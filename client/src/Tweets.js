@@ -4,13 +4,47 @@ import '../node_modules/font-awesome/css/font-awesome.min.css'
 class TweetCard extends Component{
   constructor(props){
     super(props);
-    this.state={
+    this.state ={
+      isSaved: false
+    }
+  }
+
+  componentWillMount(){
+    if(this.props.view){
+      this.setState({isSaved: true})
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.view){
+      this.setState({isSaved: true})
+    }
+    else if(nextProps!=this.props){
+      this.setState({isSaved: false});
+    }
+  }
+
+  saveTweet = () =>{
+
+    const tweetData = {
       name: this.props.name,
       screenName: this.props.screenName,
       text: this.props.text,
-      profileImageURL: this.props.profileImageURL
+      profileImageURL: this.props.profileImageURL,
+      tweetId: this.props.tweetId,
+      createdOn: this.props.createdOn
     }
+    console.log(JSON.stringify(tweetData))
+    fetch('http://localhost:5000/api/tweets',{method: 'post', body:JSON.stringify(tweetData), headers:{'Content-Type': 'application/json'}})
+      .then(response =>{
+        response.json()
+          .then(tweet => {
+            console.log(tweet)
+            this.setState({isSaved: true})
+          })
+      })
   }
+
   render(){
     return (
       <div className='col-md-6' style={{marginBottom: '30px'}}>
@@ -26,7 +60,7 @@ class TweetCard extends Component{
           <div className="card-body">
             <p className="card-text">{this.props.text}</p>
             <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary btn-sm" style={{float: 'left'}}>View on Twitter</a>
-            <button className="btn btn-secondary btn-sm" style={{float: 'left', marginLeft: '10px'}}>
+            <button className="btn btn-secondary btn-sm" disabled={this.state.isSaved} style={{float: 'left', marginLeft: '10px'}} onClick={this.saveTweet}>
               <i className="fa fa-bookmark"></i>  Save Tweet
             </button>
           </div>
@@ -58,3 +92,4 @@ class Tweets extends Component{
 }
 
 export default Tweets;
+export {TweetCard};
