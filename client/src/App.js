@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './bootstrap.min.css';
-import './FontTitles.css'
+import './styles/bootstrap.min.css';
+import './styles/FontTitles.css'
 import ViewSavedImages from './ViewSavedImages';
 import SearchForImages from './SearchForImages';
 
@@ -22,6 +22,15 @@ class App extends Component {
       showHideText: 'Show Map',
       tweets: null
     }
+  }
+
+  toggleSavedInArray = (searchId) =>{
+    this.state.tweets.map(element =>{
+      if(element.tweetId == searchId){
+        element.tweetIsSaved=!element.tweetIsSaved;
+      }
+    })
+    this.setState({tweets: this.state.tweets});
   }
 
   setLocationState = location => {
@@ -57,7 +66,7 @@ class App extends Component {
   render() {
     let buttonText, body;
     if(this.state.isViewSavedImages){
-      body=<ViewSavedImages/>;
+      body=<ViewSavedImages toggleSavedInArray={this.toggleSavedInArray}/>;
       buttonText="Search for Tweets";
     } else {
       body=<SearchForImages
@@ -68,7 +77,8 @@ class App extends Component {
               mapIsOpen = {this.state.mapIsOpen}
               location = {this.state.location}
               tweets = {this.state.tweets}
-              showHideText = {this.state.showHideText}/>;
+              showHideText = {this.state.showHideText}
+              toggleSavedInArray = {this.toggleSavedInArray}/>;
       buttonText = "View Saved Tweets";
     }
 

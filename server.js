@@ -30,12 +30,27 @@ app.get('/api/tweets', function(req, res){
 })
 
 app.post('/api/tweets', function(req, res){
-  console.log(req.body);
   Tweet.addTweet(req.body, (err, tweet) =>{
     if(err){
       res.sendStatus(500);
     }
     res.json(tweet).status(200);
+  })
+})
+
+app.get('/api/tweets/find', function(req, res){
+  const tweetIds = req.query.id
+  Tweet.findTweetsById(tweetIds, (err, tweets) =>{
+    if(err){
+      res.sendStatus(500);
+    } else{
+      var foundIds = [];
+      tweets.map(element =>{
+        foundIds.push(element.tweetId)
+      })
+      res.json(foundIds);
+    }
+
   })
 })
 

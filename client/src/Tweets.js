@@ -5,23 +5,7 @@ class TweetCard extends Component{
   constructor(props){
     super(props);
     this.state ={
-      isSaved: false,
       isSaving: false
-    }
-  }
-
-  componentWillMount(){
-    if(this.props.view){
-      this.setState({isSaved: true})
-    }
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.view){
-      this.setState({isSaved: true})
-    }
-    else if(nextProps!=this.props){
-      this.setState({isSaved: false});
     }
   }
 
@@ -34,14 +18,13 @@ class TweetCard extends Component{
       tweetId: this.props.tweetId,
       createdOn: this.props.createdOn
     }
-    console.log(JSON.stringify(tweetData))
     this.setState({isSaving: true})
     fetch('http://localhost:5000/api/tweets',{method: 'post', body:JSON.stringify(tweetData), headers:{'Content-Type': 'application/json'}})
       .then(response =>{
         response.json()
           .then(tweet => {
-            console.log(tweet)
-            this.setState({isSaved: true, isSaving: false})
+            this.props.toggleSavedInArray(this.props.tweetId);
+            this.setState({isSaving: false})
           })
       }, error =>{
         alert('Error saving Tweet.');
@@ -56,7 +39,7 @@ class TweetCard extends Component{
         if (!response.ok){
           alert('Database Error. Unable to delete.')
         } else{
-          this.setState({isSaved: false})
+          this.props.toggleSavedInArray(tweetId);
           this.props.getTweetsFromDB();
         }
       })
@@ -78,11 +61,11 @@ class TweetCard extends Component{
             <p className="card-text">{this.props.text}</p>
             <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary btn-sm" style={{float: 'left'}}>View on Twitter</a>
 
-            {this.state.isSaved ? (<button className="btn btn-danger btn-sm" style={{float: 'left', marginLeft: '10px'}} onClick={this.deleteTweet}>
+            {this.props.view ? (<button className="btn btn-danger btn-sm" style={{float: 'left', marginLeft: '10px'}} onClick={this.deleteTweet}>
                                     <i className="fa fa-bookmark"></i>  Remove Tweet
                                   </button>) :
-                                  (<button className="btn btn-secondary btn-sm" disabled={this.state.isSaving} style={{float: 'left', marginLeft: '10px'}} onClick={this.saveTweet}>
-                                    <i className="fa fa-bookmark"></i>  Save Tweet
+                                  (<button className="btn btn-secondary btn-sm" disabled={this.state.isSaving || this.props.tweetIsSaved} style={{float: 'left', marginLeft: '10px'}} onClick={this.saveTweet}>
+                                    <i className="fa fa-bookmark"></i>  {this.props.tweetIsSaved ? 'Saved' : 'Save Tweet'}
                                   </button>)
                                 }
           </div>
@@ -97,17 +80,21 @@ class Tweets extends Component{
     super(props);
   }
   render(){
-    console.log('tweets: ',this.props.tweetsList)
     return (
       <div className="row" style={{marginTop: '50px'}}>
-        {this.props.tweetsList.map((element) => <TweetCard
-                                                      key={element.id}
-                                                      tweetId={element.id_str}
-                                                      name={element.user.name}
-                                                      screenName={element.user.screen_name}
-                                                      text={element.text}
-                                                      profileImageURL={element.user.profile_image_url_https}
-                                                      createdOn={element.created_at}/>)}
+        {this.props.tweetsList.map((element) => (
+          <TweetCard
+            key={element.id}
+            tweetId={element.tweetId}
+            name={element.name}
+            screenName={element.screenName}
+            text={element.text}
+            profileImageURL={element.profileImageURL}
+            createdOn={element.createdOn}
+            tweetIsSaved = {element.tweetIsSaved}
+            toggleSavedInArray = {this.props.toggleSavedInArray}
+          />
+        ))}
       </div>
     )
   }

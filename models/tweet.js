@@ -45,3 +45,7 @@ module.exports.addTweet = function(tweetData, callback){
 module.exports.deleteTweet = function(tweetId, callback){
   Tweet.remove({tweetId: tweetId}, callback)
 }
+
+module.exports.findTweetsById = function(searchIds, callback){
+  Tweet.find({tweetId: {$in: searchIds} }, callback)
+}

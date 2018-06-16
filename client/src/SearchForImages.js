@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './bootstrap.min.css';
+import './styles/bootstrap.min.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css'
 import MyMapComponent from './MapElement.js';
 import Tweets from './Tweets.js'
@@ -12,8 +12,35 @@ class SearchForImages extends Component {
     }
   }
 
+  findAlreadySavedTweets = (tweetsArray) =>{
+    var queryString="?";
+    tweetsArray.map((element, index) =>{
+      if(index == tweetsArray.length-1){
+        queryString+=`id=${element.tweetId}`;
+      } else {
+        queryString+=`id=${element.tweetId}&`;
+      }
+    })
+    fetch(`http://localhost:5000/api/tweets/find${queryString}`)
+      .then(response =>{
+        if (!response.ok){
+          alert('Database Error. Unable to search through Database')
+        } else{
+          response.json()
+            .then(foundIdsArray =>{
+              tweetsArray.map(tweet =>{
+                foundIdsArray.map(foundId =>{
+                  if(tweet.tweetId == foundId) {
+                    tweet.tweetIsSaved = true;
+                  }
+                })
+              })
+            })
+        }
+      })
+  }
+
   getTweets = () =>{
-    console.log('get tweets')
     this.setState({isLoading: true}, () =>{
       fetch('https://cors-anywhere.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?geocode='+this.props.location.coordinates.lat+','+this.props.location.coordinates.lng+',20mi', {
         headers: {
@@ -24,15 +51,24 @@ class SearchForImages extends Component {
           this.setState({isLoading: false})
           response.json()
             .then(data =>{
-              var tweetsArray = data.statuses
-              if (tweetsArray.length>10){
-                tweetsArray.splice(10,tweetsArray.length-10)
+              if (data.statuses.length>10){
+                data.statuses.splice(10,data.statuses.length-10)
               }
-              console.log('tweets array: ',tweetsArray)
+              var tweetsArray = []
+              data.statuses.map(element =>{
+                tweetsArray.push({
+                  key: element.id,
+                  tweetId: element.id_str,
+                  name: element.user.name,
+                  screenName: element.user.screen_name,
+                  text: element.text,
+                  profileImageURL: element.user.profile_image_url_https,
+                  createdOn: element.created_at,
+                  tweetIsSaved: false
+                })
+              })
+              this.findAlreadySavedTweets(tweetsArray);
               this.props.setTweets(tweetsArray);
-              //this.setState({tweets: tweetsArray})
-            //  console.log('state: ',this.state.tweets)
-            //  console.log("this.tweets: ",this.tweets)
             })
         })
     })
@@ -41,13 +77,11 @@ class SearchForImages extends Component {
   searchHandler = () =>{
     var searchAddress = this.refs.locationInput.value;
     var searchAddressNoSpace = searchAddress.split(' ').join('+');
-    console.log(searchAddress)
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+searchAddressNoSpace)
       .then(response => {
         response.json()
           .then(data =>{
             if (data.status==='OK'){
-              console.log(data.results[0].formatted_address)
               this.props.setLocationState(data.results[0])
               /*
               this.setState({location: {
@@ -98,7 +132,7 @@ class SearchForImages extends Component {
                                     coordinates={this.props.location.isFound ? this.props.location.coordinates : {lat: 0, lng: 0}}
                                     zoom={this.props.location.isFound ? 15 : 1}
                                     />}
-        {this.state.isLoading ? <div><i className="fa fa-spinner fa-spin" /> Loading...</div> : (this.props.tweets!=null &&<Tweets tweetsList={this.props.tweets}/>)}
+        {this.state.isLoading ? <div><i className="fa fa-spinner fa-spin" /> Loading...</div> : (this.props.tweets!=null &&<Tweets tweetsList={this.props.tweets} toggleSavedInArray={this.props.toggleSavedInArray}/>)}
       </div>
       </div>
     )
