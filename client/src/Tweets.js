@@ -5,7 +5,8 @@ class TweetCard extends Component{
   constructor(props){
     super(props);
     this.state ={
-      isSaved: false
+      isSaved: false,
+      isSaving: false
     }
   }
 
@@ -25,7 +26,6 @@ class TweetCard extends Component{
   }
 
   saveTweet = () =>{
-
     const tweetData = {
       name: this.props.name,
       screenName: this.props.screenName,
@@ -35,13 +35,30 @@ class TweetCard extends Component{
       createdOn: this.props.createdOn
     }
     console.log(JSON.stringify(tweetData))
+    this.setState({isSaving: true})
     fetch('http://localhost:5000/api/tweets',{method: 'post', body:JSON.stringify(tweetData), headers:{'Content-Type': 'application/json'}})
       .then(response =>{
         response.json()
           .then(tweet => {
             console.log(tweet)
-            this.setState({isSaved: true})
+            this.setState({isSaved: true, isSaving: false})
           })
+      }, error =>{
+        alert('Error saving Tweet.');
+        this.setState({isSaving: false});
+      })
+  }
+
+  deleteTweet = () =>{
+    const tweetId = this.props.tweetId;
+    fetch(`http://localhost:5000/api/tweets/${tweetId}`, {method: 'delete'})
+      .then(response =>{
+        if (!response.ok){
+          alert('Database Error. Unable to delete.')
+        } else{
+          this.setState({isSaved: false})
+          this.props.getTweetsFromDB();
+        }
       })
   }
 
@@ -60,9 +77,14 @@ class TweetCard extends Component{
           <div className="card-body">
             <p className="card-text">{this.props.text}</p>
             <a href={`https://twitter.com/${this.props.screenName}/status/${this.props.tweetId}`} target='_blank' className="btn btn-primary btn-sm" style={{float: 'left'}}>View on Twitter</a>
-            <button className="btn btn-secondary btn-sm" disabled={this.state.isSaved} style={{float: 'left', marginLeft: '10px'}} onClick={this.saveTweet}>
-              <i className="fa fa-bookmark"></i>  Save Tweet
-            </button>
+
+            {this.state.isSaved ? (<button className="btn btn-danger btn-sm" style={{float: 'left', marginLeft: '10px'}} onClick={this.deleteTweet}>
+                                    <i className="fa fa-bookmark"></i>  Remove Tweet
+                                  </button>) :
+                                  (<button className="btn btn-secondary btn-sm" disabled={this.state.isSaving} style={{float: 'left', marginLeft: '10px'}} onClick={this.saveTweet}>
+                                    <i className="fa fa-bookmark"></i>  Save Tweet
+                                  </button>)
+                                }
           </div>
         </div>
       </div>

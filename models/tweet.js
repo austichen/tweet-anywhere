@@ -41,3 +41,7 @@ module.exports.addTweet = function(tweetData, callback){
   const tweet = tweetData;
   Tweet.create(tweet, callback);
 }
+
+module.exports.deleteTweet = function(tweetId, callback){
+  Tweet.remove({tweetId: tweetId}, callback)
+}

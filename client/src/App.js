@@ -75,7 +75,7 @@ class App extends Component {
     return (
       <div className=" text-center">
         <header style={{backgroundColor: '#1dcaff', paddingBottom: '25px'}}>
-          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100, color: 'white', fontFamily: "'Oxygen', sans-serif"}}>Welcome to Tweet around the world!</h1>
+          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100, color: 'white', fontFamily: "'Oxygen', sans-serif"}}>Welcome to Tweet Anywhere!</h1>
           <button type="button" className="btn btn-outline-light" onClick={this.onClickHandler} style={{marginTop: 50, fontFamily: "Open Sans"}}>{buttonText}</button>
         </header>
         {body}

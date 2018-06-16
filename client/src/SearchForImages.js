@@ -17,7 +17,7 @@ class SearchForImages extends Component {
     this.setState({isLoading: true}, () =>{
       fetch('https://cors-anywhere.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?geocode='+this.props.location.coordinates.lat+','+this.props.location.coordinates.lng+',20mi', {
         headers: {
-          'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAALt86QAAAAAACmrEK9zGluXlGwOyN07eh3HHiAE%3DNtCUeytzF8snroLeS8Iu21DY91i3CjQIM568zmxcIU9frN9d2Y'
+          'Authorization': process.env.REACT_APP_AUTH_TOKEN
         }
       })
         .then(response =>{

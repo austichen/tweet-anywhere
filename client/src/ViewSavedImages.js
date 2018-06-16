@@ -11,11 +11,18 @@ class ViewSavedImages extends Component {
     }
   }
 
-  componentDidMount(){
+  getTweetsFromDB = () =>{
+    console.log('check')
     fetch('http://localhost:5000/api/tweets')
       .then(response => {response.json()
         .then(tweets => {this.setState({tweetsArray: tweets})}
-      )})
+      )}, error =>{
+        alert('Error retrieving Tweet data.')
+      })
+  }
+
+  componentDidMount(){
+    this.getTweetsFromDB();
   }
 
   render(){
@@ -31,6 +38,7 @@ class ViewSavedImages extends Component {
             profileImageURL={element.profileImageURL}
             createdOn={element.createdOn}
             view={true}
+            getTweetsFromDB={this.getTweetsFromDB}
           />
         )}
       </div>
