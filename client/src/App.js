@@ -26,12 +26,14 @@ class App extends Component {
   }
 
   toggleSavedInArray = (searchId) =>{
-    this.state.tweets.map(element =>{
-      if(element.tweetId == searchId){
-        element.tweetIsSaved=!element.tweetIsSaved;
-      }
-    })
-    this.setState({tweets: this.state.tweets});
+    if(this.state.tweets!=null){
+      this.state.tweets.map(element =>{
+        if(element.tweetId == searchId){
+          element.tweetIsSaved=!element.tweetIsSaved;
+        }
+      })
+      this.setState({tweets: this.state.tweets});
+    }
   }
 
   setLocationState = location => {
