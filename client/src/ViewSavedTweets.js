@@ -8,7 +8,7 @@ class ViewSavedTweets extends Component {
     super(props)
     this.state = {
       tweetsArray: [],
-      isLoading: false
+      isLoading: true
     }
   }
 
@@ -31,8 +31,9 @@ class ViewSavedTweets extends Component {
     return(
       <div className="container" style={{paddingTop: '20px'}}>
         <h1 className="display-4" style={{color: '#a9a9a9', marginBottom: '50px'}}>Here are the Tweets you have saved.</h1>
-          {this.state.tweetsArray.length<1 && <p className="text-muted"> There are no tweets to display. </p>}
-          {this.state.isLoading && <div><i className="fa fa-spinner fa-spin" /> Loading...</div>}
+        {(this.state.tweetsArray.length<1 && !this.state.isLoading) && <p className="text-muted"> There are no tweets to display. </p>}
+        {this.state.isLoading && <div><i className="fa fa-spinner fa-spin" /> Loading...</div>}
+        <div className="row">
           {this.state.tweetsArray.map(element =>
             <TweetCard
               key={element._id}
@@ -47,6 +48,7 @@ class ViewSavedTweets extends Component {
               toggleSavedInArray={this.props.toggleSavedInArray}
             />
           )}
+        </div>
       </div>
     )
   }
