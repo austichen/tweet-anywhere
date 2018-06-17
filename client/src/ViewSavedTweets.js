@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
 import './styles/bootstrap.min.css';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
 import {TweetCard} from './Tweets.js';
 
-class ViewSavedImages extends Component {
+class ViewSavedTweets extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tweetsArray: []
+      tweetsArray: [],
+      isLoading: false
     }
   }
 
   getTweetsFromDB = () =>{
+    this.setState({isLoading: true})
     fetch('api/tweets')
       .then(response => {response.json()
-        .then(tweets => {this.setState({tweetsArray: tweets})}
+        .then(tweets => {this.setState({tweetsArray: tweets, isLoading: false})}
       )}, error =>{
         alert('Error retrieving Tweet data.')
+        this.setState({isLoading: false})
       })
   }
 
@@ -25,8 +29,10 @@ class ViewSavedImages extends Component {
 
   render(){
     return(
-      <div className="container">
-        <div  className="row" style={{marginTop: '50px'}}>
+      <div className="container" style={{paddingTop: '20px'}}>
+        <h1 className="display-4" style={{color: '#a9a9a9', marginBottom: '50px'}}>Here are the Tweets you have saved.</h1>
+          {this.state.tweetsArray.length<1 && <p className="text-muted"> There are no tweets to display. </p>}
+          {this.state.isLoading && <div><i className="fa fa-spinner fa-spin" /> Loading...</div>}
           {this.state.tweetsArray.map(element =>
             <TweetCard
               key={element._id}
@@ -41,10 +47,9 @@ class ViewSavedImages extends Component {
               toggleSavedInArray={this.props.toggleSavedInArray}
             />
           )}
-        </div>
       </div>
     )
   }
 }
 
-export default ViewSavedImages;
+export default ViewSavedTweets;

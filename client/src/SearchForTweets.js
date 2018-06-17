@@ -4,7 +4,7 @@ import '../node_modules/font-awesome/css/font-awesome.min.css'
 import MyMapComponent from './MapElement.js';
 import Tweets from './Tweets.js'
 
-class SearchForImages extends Component {
+class SearchForTweets extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -139,4 +139,4 @@ class SearchForImages extends Component {
   }
 }
 
-export default SearchForImages;
+export default SearchForTweets;

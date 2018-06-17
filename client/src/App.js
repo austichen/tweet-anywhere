@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './styles/bootstrap.min.css';
 import './styles/FontTitles.css'
-import ViewSavedImages from './ViewSavedImages';
-import SearchForImages from './SearchForImages';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
+import ViewSavedTweets from './ViewSavedTweets';
+import SearchForTweets from './SearchForTweets';
 
 
 class App extends Component {
@@ -66,10 +67,10 @@ class App extends Component {
   render() {
     let buttonText, body;
     if(this.state.isViewSavedImages){
-      body=<ViewSavedImages toggleSavedInArray={this.toggleSavedInArray}/>;
+      body=<ViewSavedTweets toggleSavedInArray={this.toggleSavedInArray}/>;
       buttonText="Search for Tweets";
     } else {
-      body=<SearchForImages
+      body=<SearchForTweets
               setLocationState={this.setLocationState}
               locationErrorHandler={this.locationErrorHandler}
               toggleMap = {this.toggleMap}
@@ -85,8 +86,13 @@ class App extends Component {
     return (
       <div className=" text-center">
         <header style={{backgroundColor: '#1dcaff', paddingBottom: '25px'}}>
-          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 100, color: 'white', fontFamily: "'Oxygen', sans-serif"}}>Welcome to Tweet Anywhere!</h1>
-          <button type="button" className="btn btn-outline-light" onClick={this.onClickHandler} style={{marginTop: 50, fontFamily: "Open Sans"}}>{buttonText}</button>
+          <h1 className="display-2" style={{paddingTop: 50, marginBottom: 10, color: 'white', fontFamily: "'Oxygen', sans-serif"}}>Welcome to Tweet Anywhere!</h1>
+          <div style={{marginBottom: 10}}>
+          <a href="https://github.com/austichen/twitter_app" title="View on Github" target="_blank" style={{fontSize: '3em', color: 'white'}}>
+            <i className="fa fa-github" />
+          </a>
+          </div>
+          <button type="button" className="btn btn-outline-light" onClick={this.onClickHandler} style={{marginTop: 10, fontFamily: "Open Sans"}}>{buttonText}</button>
         </header>
         {body}
       </div>
