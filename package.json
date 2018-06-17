@@ -15,10 +15,11 @@
   "devDependencies": {
     "nodemon": "*"
   },
-  "dependencies":{
+  "dependencies": {
+    "body-parser": "*",
+    "dotenv": "^6.0.0",
     "express": "*",
-    "mongoose": "*",
-    "body-parser": "*"
+    "mongoose": "*"
   },
   "bugs": {
     "url": "https://github.com/austichen/twitter_app/issues"

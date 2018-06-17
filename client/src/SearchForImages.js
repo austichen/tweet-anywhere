@@ -21,7 +21,7 @@ class SearchForImages extends Component {
         queryString+=`id=${element.tweetId}&`;
       }
     })
-    fetch(`http://localhost:5000/api/tweets/find${queryString}`)
+    fetch(`api/tweets/find${queryString}`)
       .then(response =>{
         if (!response.ok){
           alert('Database Error. Unable to search through Database')

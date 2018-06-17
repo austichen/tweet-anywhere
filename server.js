@@ -2,14 +2,17 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 Tweet = require('./models/tweet')
 
-mongoose.connect('mongodb://localhost/tweetcollection');
+mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@ds163680.mlab.com:63680/tweet_database`);
 
 var db = mongoose.connection;
 
-//app.use(express.static('client/build'));
+const port = process.env.port || 5000;
+
+app.use(express.static('client/build'));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -64,4 +67,4 @@ app.delete('/api/tweets/:tweetId',(req, res) =>{
   })
 })
 
-app.listen(5000, () => {console.log("listening on port 5000")});
+app.listen(port, () => {console.log("listening on port 5000")});

@@ -11,7 +11,7 @@ class ViewSavedImages extends Component {
   }
 
   getTweetsFromDB = () =>{
-    fetch('http://localhost:5000/api/tweets')
+    fetch('api/tweets')
       .then(response => {response.json()
         .then(tweets => {this.setState({tweetsArray: tweets})}
       )}, error =>{

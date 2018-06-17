@@ -19,7 +19,7 @@ class TweetCard extends Component{
       createdOn: this.props.createdOn
     }
     this.setState({isSaving: true})
-    fetch('http://localhost:5000/api/tweets',{method: 'post', body:JSON.stringify(tweetData), headers:{'Content-Type': 'application/json'}})
+    fetch('api/tweets',{method: 'post', body:JSON.stringify(tweetData), headers:{'Content-Type': 'application/json'}})
       .then(response =>{
         response.json()
           .then(tweet => {
@@ -34,7 +34,7 @@ class TweetCard extends Component{
 
   deleteTweet = () =>{
     const tweetId = this.props.tweetId;
-    fetch(`http://localhost:5000/api/tweets/${tweetId}`, {method: 'delete'})
+    fetch(`api/tweets/${tweetId}`, {method: 'delete'})
       .then(response =>{
         if (!response.ok){
           alert('Database Error. Unable to delete.')
