@@ -12,9 +12,6 @@
   },
   "author": "Austin Chen",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "*"
-  },
   "dependencies": {
     "body-parser": "*",
     "dotenv": "^6.0.0",

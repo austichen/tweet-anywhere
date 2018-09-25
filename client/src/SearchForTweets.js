@@ -41,10 +41,11 @@ class SearchForTweets extends Component {
   }
 
   getTweets = () =>{
+    console.log('auth token:',process.env.REACT_APP_GOOGLE_MAPS_AUTH)
     this.setState({isLoading: true}, () =>{
       fetch('https://cors-anywhere.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?geocode='+this.props.location.coordinates.lat+','+this.props.location.coordinates.lng+',20mi', {
         headers: {
-          'Authorization': process.env.REACT_APP_AUTH_TOKEN
+          'Authorization': process.env.REACT_APP_TWITTER_AUTH
         }
       })
         .then(response =>{
@@ -77,7 +78,7 @@ class SearchForTweets extends Component {
   searchHandler = () =>{
     var searchAddress = this.refs.locationInput.value;
     var searchAddressNoSpace = searchAddress.split(' ').join('+');
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+searchAddressNoSpace)
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${searchAddressNoSpace}&key=${process.env.REACT_APP_GOOGLE_MAPS_AUTH}`)
       .then(response => {
         response.json()
           .then(data =>{
